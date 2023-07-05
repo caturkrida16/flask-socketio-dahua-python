@@ -2,6 +2,7 @@ eventlet==0.33.3
 Flask==2.3.2
 Flask-SocketIO==5.3.4
 gunicorn==20.1.0
+numpy==1.25.0
 opencv-python==4.8.0.74
 requests==2.31.0
 sensecam-control==0.1.0
