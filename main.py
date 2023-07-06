@@ -8,16 +8,17 @@
 ### >>><<< ###
 # Packages
 ## System
-from requests.auth import HTTPBasicAuth, HTTPDigestAuth
 import json
 import os
-import requests
 
 ## PIP
 from flask import Flask, jsonify, request, render_template, Response
 import cv2
 from flask_socketio import SocketIO
 from sensecam_control import onvif_control
+from requests.auth import HTTPBasicAuth, HTTPDigestAuth
+import requests
+import simplejpeg
 
 
 
@@ -73,10 +74,9 @@ def cam_frames(rtsp):
             break
             
         else:
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
+            buffer = simplejpeg.encode_jpeg(frame, 85, colorspace="BGR", fastdct=True)
             yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                   b'Content-Type: image/jpeg\r\n\r\n' + buffer + b'\r\n')
                    
 ### Dahua API Authentication
 def api_auth(url):
