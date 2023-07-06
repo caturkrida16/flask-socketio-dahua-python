@@ -1,2 +1,2 @@
-# flask-python-dahua-api
-Example of integrate Dahua HTTP API to Flask Python
+# Flask SocketIO Dahua Python
+Example of integrate Dahua HTTP API to Flask SocketIO Python
