@@ -4,4 +4,5 @@ gunicorn==20.1.0
 opencv_python==4.6.0.66
 Requests==2.31.0
 sensecam_control==0.1.0
+simplejpeg==1.6.6
 simple-websocket==0.10.1
