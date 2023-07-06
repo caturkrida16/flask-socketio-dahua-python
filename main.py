@@ -61,7 +61,6 @@ def stream():
 ### PTZ Control from ONVIF
 @socketio.on("ptz_control")
 def ptz_control(json):
-    print(json)
     ptz_cam(json["direction"]) # Move Camera
     cam.stop_move() # And stop it
 
