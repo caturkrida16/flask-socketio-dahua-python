@@ -16,8 +16,8 @@ from flask import Flask, jsonify, request, render_template, Response
 import cv2
 from flask_socketio import SocketIO
 from sensecam_control import onvif_control
-from requests.auth import HTTPBasicAuth, HTTPDigestAuth
 import requests
+from requests.auth import HTTPBasicAuth, HTTPDigestAuth
 import simplejpeg
 
 
