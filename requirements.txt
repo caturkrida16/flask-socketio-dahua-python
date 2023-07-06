@@ -1,8 +1,7 @@
-eventlet==0.33.3
 Flask==2.3.2
-Flask-SocketIO==5.3.4
+Flask_SocketIO==5.3.4
 gunicorn==20.1.0
-opencv-python==4.8.0.74
-requests==2.31.0
-sensecam-control==0.1.0
-waitress==2.1.2
+opencv_python==4.6.0.66
+Requests==2.31.0
+sensecam_control==0.1.0
+simple-websocket==0.10.1
