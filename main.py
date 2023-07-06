@@ -31,7 +31,7 @@ password = os.getenv("PASSWORD")
 ## Core
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "secret!"
-socketio = SocketIO(app, async_mode="eventlet", cors_allowed_origins='*')
+socketio = SocketIO(app, cors_allowed_origins='*')
 cam = onvif_control.CameraControl(host, username, password) # Initialize the ONVIF
 cam.camera_start()
 
