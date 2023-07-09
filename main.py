@@ -2,8 +2,7 @@
 """
 1. You need to set environment variable HOST, USERNAME, and PASSWORD with IP Camera credentials
 2. You need to set environment variables CALLBACK_URL with your API route callback (Your API must can access from Internet)
-3. You need to set environment variables CLIENT_ID with Google Credentials
-4. You need to set environment variables CLIENT_SECRET with path your file json of client secret
+3. You need to set environment variables CLIENT_SECRET with path your file json of client secret
 """
 
 
@@ -39,7 +38,7 @@ password = os.getenv("PASSWORD")
 callback_url = os.getenv("CALLBACK_URL")
 client_secret = os.getenv("CLIENT_SECRET")
 
-## Core
+## Core   
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "secret!"
 socketio = SocketIO(app, cors_allowed_origins='*')
@@ -48,8 +47,11 @@ cam.camera_start()
 
 ## Google Login
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-GOOGLE_CLIENT_ID = os.getenv("CLIENT_ID")
-flow = Flow.from_client_secrets_file(client_secrets_file=client_secret, scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"], redirect_uri=callback)url)
+read_ci = open("client_secret.json")
+read_ci_data = json.load(read_ci)
+GOOGLE_CLIENT_ID = read_ci_data["web"]["client_id"]
+read_ci.close()
+flow = Flow.from_client_secrets_file(client_secrets_file=client_secret, scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"], redirect_uri=callback_url)
 
 ## Dahua HTTP API (Specify)
 http_api = "http://" + host + "/cgi-bin"
@@ -74,7 +76,7 @@ def stream():
     return Response(cam_frames(rtsp_stream), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 ### Login
-@app.route("/login", methods=["GET"])
+@app.route("/login")
 def login():
     authorization_url, state = flow.authorization_url()
     session["state"] = state
@@ -87,7 +89,7 @@ def logout():
     return "Logout"
 
 ### Callback
-@app.route("/callback", methods=["GET"])
+@app.route("/callback")
 def callback():
     flow.fetch_token(authorization_response=request.url)
 
@@ -104,8 +106,7 @@ def callback():
     id_info["id_token"] = credentials._id_token
     
     return id_info
-        
-    
+
 ## SocketIO
 ### PTZ Control
 @socketio.on("ptz_control")
@@ -118,7 +119,7 @@ def ptz_control(json):
     except:
         print("False ID Token / Direction")
     
-## Function
+## Function   
 ### Generate camera frames
 def cam_frames(rtsp):
     while True:
@@ -131,21 +132,6 @@ def cam_frames(rtsp):
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + buffer + b'\r\n')
                    
-### Dahua API Authentication
-def api_auth(url):
-    response = requests.get(url)
-    auth_type = response.headers["WWW-Authenticate"].split(" ")[0]
-    if (auth_type.lower() == "basic"):
-        response = requests.get(url, auth=HTTPBasicAuth(username, password))
-        return response.text
-        
-    elif (auth_type.lower() == "digest"):
-        response = requests.get(url, auth=HTTPDigestAuth(username, password))
-        return response.text
-
-    else:
-        print("Unknown authentication type!")
-        
 ### ONVIF PTZ Control
 def ptz_cam(direction):
     # Up
@@ -201,4 +187,19 @@ def ptz_move():
             return "Invalid PTZ Action", 400
     except:
         return "Your JSON is error", 400
-        """
+
+### Dahua API Authentication
+def api_auth(url):
+    response = requests.get(url)
+    auth_type = response.headers["WWW-Authenticate"].split(" ")[0]
+    if (auth_type.lower() == "basic"):
+        response = requests.get(url, auth=HTTPBasicAuth(username, password))
+        return response.text
+        
+    elif (auth_type.lower() == "digest"):
+        response = requests.get(url, auth=HTTPDigestAuth(username, password))
+        return response.text
+
+    else:
+        print("Unknown authentication type!")
+"""
