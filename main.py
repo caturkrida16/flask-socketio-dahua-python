@@ -1,8 +1,12 @@
 # TASK BERFORE RUN THIS PROGRAM
 """
-1. You need to set environment variable HOST, USERNAME, and PASSWORD with IP Camera credentials
-2. You need to set environment variables CALLBACK_URL with your API route callback (Your API must can access from Internet)
-3. You need to set environment variables CLIENT_SECRET with path your file json of client secret
+1. You need to set environment variable for:
+1.1 HOST (IP Camera address / domain)
+1.2 USERNAME (IP Camera username)
+1.3 PASSWORD (IP Camera passowrd)
+1.4 CALLBACK_URL (IP / Domain callback your server)
+1.5 CLIENT_SECRET (Path your Oauth2 Credentials JSON from GCP)
+1.6 SECRET (Secrer for your application)
 """
 
 
@@ -37,10 +41,11 @@ username = os.getenv("USERNAME")
 password = os.getenv("PASSWORD")
 callback_url = os.getenv("CALLBACK_URL")
 client_secret = os.getenv("CLIENT_SECRET")
+secret = os.getenv("SECRET")
 
 ## Core   
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "secret!"
+app.config["SECRET_KEY"] = secret
 socketio = SocketIO(app, cors_allowed_origins='*')
 cam = onvif_control.CameraControl(host, username, password)
 cam.camera_start()
