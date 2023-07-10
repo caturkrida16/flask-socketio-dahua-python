@@ -116,9 +116,9 @@ def callback():
 ### PTZ Control
 @socketio.on("ptz_control")
 def ptz_control(json):
-    from google.auth.transport import requests
+    #from google.auth.transport import requests
     try:
-        id_info = id_token.verify_oauth2_token(json["id_token"], requests.Request(), GOOGLE_CLIENT_ID)
+        #id_info = id_token.verify_oauth2_token(json["id_token"], requests.Request(), GOOGLE_CLIENT_ID)
         ptz_cam(json["direction"]) # Move Camera
         cam.stop_move() # And stop it
     except:
