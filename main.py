@@ -52,7 +52,7 @@ cam.camera_start()
 
 ## Google Login
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-read_ci = open("client_secret.json")
+read_ci = open(client_secret)
 read_ci_data = json.load(read_ci)
 GOOGLE_CLIENT_ID = read_ci_data["web"]["client_id"]
 read_ci.close()
