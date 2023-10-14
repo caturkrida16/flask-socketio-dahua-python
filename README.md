@@ -1,2 +1,2 @@
 # Flask SocketIO Dahua Python
-Example of integrate Dahua HTTP API to Flask SocketIO Python
+In Login i use Google Login with Callback
